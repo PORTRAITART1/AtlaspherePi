@@ -10,7 +10,7 @@ from sqlalchemy import select
 # Ajouter le chemin du backend pour importer les modules core
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from app.backend.core.database import AsyncSessionLocal
+from app.backend.core.database import db_manager
 from app.backend.models.projects import Projects
 
 # Définition des projets exemple
@@ -55,8 +55,10 @@ sample_projects = [
 
 async def seed_projects():
     print("Début du peuplement de la base de données avec des projets...")
+    # Initialiser la connexion à la base de données
+    await db_manager.init_db()
     
-    async with AsyncSessionLocal() as session:
+    async with db_manager.async_session_maker() as session:
         async with session.begin():
             # Vérifier si des projets existent déjà pour éviter les doublons
             result = await session.execute(select(Projects).limit(1))

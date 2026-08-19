@@ -69,7 +69,7 @@ export default function Quests() {
       }
     } catch (error) {
       console.error('Failed to load quests:', error);
-      // Fallback mock data for demo
+      // Local quest data used when remote data is unavailable
       setQuests([
         { id: 1, quest_id: 'first_vote', title: 'Premier Vote', description: 'Votez pour la première fois', quest_type: 'one_time', requirement_type: 'vote_count', requirement_target: 1, reward_reputation: 50, reward_pi_amount: 0, reward_badge: 'voter_bronze', progress: 0, completed: false, claimed: false },
         { id: 2, quest_id: 'daily_voter', title: 'Votant Quotidien', description: 'Votez au moins une fois aujourd\'hui', quest_type: 'daily', requirement_type: 'vote_count', requirement_target: 1, reward_reputation: 10, reward_pi_amount: 0, reward_badge: null, progress: 0, completed: false, claimed: false },

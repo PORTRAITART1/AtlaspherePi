@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 
 interface NetworkConfig {
-  network: 'testnet' | 'mainnet';
+  network: 'mainnet';
   sandbox: boolean;
   piServerUrl: string;
   features: {
@@ -21,9 +21,9 @@ interface NetworkConfig {
 
 export default function Settings() {
   const [config, setConfig] = useState<NetworkConfig>({
-    network: 'testnet',
-    sandbox: true,
-    piServerUrl: 'https://api.testnet.minepi.com',
+    network: 'mainnet',
+    sandbox: false,
+    piServerUrl: 'https://api.minepi.com',
     features: {
       smartContracts: true,
       a2uPayments: true,
@@ -35,19 +35,26 @@ export default function Settings() {
   useEffect(() => {
     const savedConfig = localStorage.getItem('atlasphere_network_config');
     if (savedConfig) {
-      setConfig(JSON.parse(savedConfig));
+      try {
+        const parsedConfig = JSON.parse(savedConfig);
+        setConfig({
+          ...parsedConfig,
+          network: 'mainnet',
+          sandbox: false,
+          piServerUrl: 'https://api.minepi.com',
+        });
+      } catch {
+        localStorage.removeItem('atlasphere_network_config');
+      }
     }
   }, []);
 
-  const toggleNetwork = () => {
-    const newNetwork = config.network === 'testnet' ? 'mainnet' : 'testnet';
+  const enforceMainnet = () => {
     setConfig({
       ...config,
-      network: newNetwork,
-      sandbox: newNetwork === 'testnet',
-      piServerUrl: newNetwork === 'mainnet'
-        ? 'https://api.mainnet.minepi.com'
-        : 'https://api.testnet.minepi.com',
+      network: 'mainnet',
+      sandbox: false,
+      piServerUrl: 'https://api.minepi.com',
     });
   };
 
@@ -72,7 +79,7 @@ export default function Settings() {
     { id: 'wallet', label: 'Wallet Mainnet créé avec 2FA activé', critical: true },
     { id: 'apikey', label: 'API Key Mainnet générée et testée', critical: true },
     { id: 'domain', label: 'Domaine validé dans Developer Portal', critical: true },
-    { id: 'tests', label: 'Tous les paiements Testnet fonctionnent depuis 7 jours', critical: true },
+    { id: 'tests', label: 'Tous les paiements Mainnet sont validés', critical: true },
     { id: 'contracts', label: 'Smart contracts validés par 10+ transactions', critical: false },
     { id: 'review', label: 'Code review par au moins 1 développeur', critical: false },
     { id: 'backup', label: 'Backup base de données configuré', critical: false },
@@ -107,7 +114,7 @@ export default function Settings() {
             transition={{ duration: 0.4 }}
           >
             <h1 className="text-3xl font-bold text-white mb-2">⚙️ Configuration Réseau</h1>
-            <p className="text-gray-400 mb-8">Gérez la configuration Testnet/Mainnet de Atlasphere</p>
+            <p className="text-gray-400 mb-8">Gérez la configuration Mainnet de Atlasphere</p>
           </motion.div>
 
           {/* Network Toggle */}
@@ -115,8 +122,8 @@ export default function Settings() {
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-3">
                 🌐 Réseau Pi Network
-                <Badge className={config.network === 'mainnet' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}>
-                  {config.network === 'mainnet' ? '🟢 Mainnet' : '🟡 Testnet'}
+                <Badge className="bg-emerald-500/20 text-emerald-400">
+                  🟢 Mainnet
                 </Badge>
               </CardTitle>
             </CardHeader>
@@ -125,14 +132,13 @@ export default function Settings() {
                 <div>
                   <p className="text-white font-medium">Mode Mainnet</p>
                   <p className="text-sm text-gray-400">
-                    {config.network === 'mainnet'
-                      ? '⚠️ Transactions en π réels — Soyez prudent !'
-                      : 'Mode sandbox avec Test-Pi (pas de valeur réelle)'}
+                    ⚠️ Transactions en π réels — Soyez prudent !
                   </p>
                 </div>
                 <Switch
-                  checked={config.network === 'mainnet'}
-                  onCheckedChange={toggleNetwork}
+                  checked={true}
+                  onCheckedChange={enforceMainnet}
+                  disabled
                 />
               </div>
 
@@ -230,13 +236,13 @@ export default function Settings() {
               </div>
               <pre className="bg-slate-900 p-4 rounded-lg text-xs text-gray-300 overflow-x-auto">
 {`# Pi Network (⚠️ EXEMPLES DE FORMAT — remplacez par vos vraies clés côté SERVEUR uniquement)
-PI_API_KEY=${config.network === 'mainnet' ? 'mainnet_xxxxxxxx' : 'testnet_xxxxxxxx'}
+PI_API_KEY=mainnet_xxxxxxxx
 DEVELOPER_PUBLIC_KEY=GXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 DEVELOPER_SECRET_SEED=SXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 # Réseau
 NODE_ENV=${config.network === 'mainnet' ? 'production' : 'development'}
-NETWORK=${config.network === 'mainnet' ? 'Pi Network' : 'Pi Testnet'}
+NETWORK=Pi Network
 PI_SERVER_URL=${config.piServerUrl}
 
 # Feature Flags
