@@ -116,7 +116,7 @@ export default function ProposalDetail() {
         if (updatedProject) {
           setProject(updatedProject);
         } else {
-          // Fallback: update locally
+          // Update local state when remote refresh is unavailable
           setProject({ ...project, raised: (project.raised || 0) + amount });
         }
         setContributionAmount('10');

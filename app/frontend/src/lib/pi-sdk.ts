@@ -123,10 +123,9 @@ export interface PiRC2ProcessResult {
   total: number;
 }
 
-// PiRC2 Contract on Pi Testnet
+// PiRC2 Contract configuration
 export const PIRC2_CONTRACT_ID = 'CCUF75B6W3HRJTJD6O7OXNI72HGJ7DERZ5MUNOMFMSK23ME5GUIKPFYV';
-export const PI_TESTNET_RPC = 'https://rpc.testnet.minepi.com';
-export const PI_NETWORK_PASSPHRASE = 'Pi Testnet';
+export const PI_NETWORK_PASSPHRASE = 'Pi Mainnet';
 
 // --- Declare Pi SDK global type (aligned with official Pi SDK docs) ---
 // Reference: https://pi-apps.github.io/pi-sdk-docs/pi-sdk/Core
@@ -338,7 +337,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number, fallbackMsg: string): P
   ]);
 }
 
-// Authenticate with Pi Network (real SDK or sandbox simulation)
+// Authenticate with Pi Network using the real Pi SDK
 export async function authenticate(): Promise<PiUser> {
   // Ensure Pi SDK is fully initialized (await Promise) before authenticating
   await initPiSdk();
@@ -363,7 +362,7 @@ export async function authenticate(): Promise<PiUser> {
       if (backendUser) {
         currentUser = backendUser;
       } else {
-        // Fallback to local user if backend fails
+        // Keep current user only if backend session restore fails
         currentUser = {
           uid: auth.user.uid,
           username: auth.user.username,

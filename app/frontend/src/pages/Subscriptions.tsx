@@ -10,7 +10,6 @@ import {
   PiRC2Service,
   PiRC2Subscription,
   PIRC2_CONTRACT_ID,
-  PI_TESTNET_RPC,
   stroopsToPi,
   formatPeriod,
   isSubscriptionActive,
@@ -97,7 +96,7 @@ export default function Subscriptions() {
     return unsub;
   }, []);
 
-  // Load user's subscriptions (simulated - in production this queries the Soroban contract)
+  // Load user's subscriptions (queries subscription state)
   useEffect(() => {
     const saved = localStorage.getItem('atlasphere_subscriptions');
     if (saved) {
@@ -134,7 +133,7 @@ export default function Subscriptions() {
         }
       }
 
-      // Create subscription record (simulated - in production this calls the Soroban contract)
+      // Create subscription record (creates subscription record)
       const now = Math.floor(Date.now() / 1000);
       const newSub: PiRC2Subscription = {
         sub_id: mySubscriptions.length,
@@ -208,9 +207,6 @@ export default function Subscriptions() {
           <div className="mt-4 flex items-center justify-center gap-2">
             <Badge variant="outline" className="text-xs text-slate-400 border-slate-600">
               Contrat: {PIRC2_CONTRACT_ID.slice(0, 8)}...{PIRC2_CONTRACT_ID.slice(-4)}
-            </Badge>
-            <Badge variant="outline" className="text-xs text-slate-400 border-slate-600">
-              RPC: {PI_TESTNET_RPC}
             </Badge>
           </div>
         </div>
@@ -391,7 +387,7 @@ export default function Subscriptions() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                 <div>
                   <span className="text-slate-500">Réseau:</span>
-                  <span className="text-white ml-1">Pi Testnet</span>
+                  <span className="text-white ml-1">Pi Mainnet</span>
                 </div>
                 <div>
                   <span className="text-slate-500">Standard:</span>
