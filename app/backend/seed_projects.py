@@ -4,7 +4,6 @@ import asyncio
 import os
 import sys
 from datetime import datetime
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 # Ajouter le chemin du backend pour importer les modules core
@@ -55,7 +54,7 @@ sample_projects = [
 
 async def seed_projects():
     print("Début du peuplement de la base de données avec des projets...")
-    # Initialiser la connexion à la base de données
+    # Initialize the database manager (create engine and sessionmaker)
     await db_manager.init_db()
     
     async with db_manager.async_session_maker() as session:
