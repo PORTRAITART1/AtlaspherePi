@@ -1,0 +1,30 @@
+{
+    "api_doc": {
+      "title": "API 文档",
+      "intro": "欢迎来到 AtlaspherePI 官方 API 文档。在这里，您将找到与我们平台集成所需的所有信息。",
+      "auth_section": "身份验证",
+      "endpoints_section": "端点"
+    },
+    "security": {
+      "title": "安全",
+      "2fa": "双重身份验证",
+      "api_keys": "API 密钥",
+      "activity_log": "活动日志"
+    },
+    "reputation": {
+      "title": "声誉",
+      "score": "综合评分",
+      "trends": "趋势",
+      "factors": "影响因素"
+    },
+    "settings": {
+      "title": "设置",
+      "profile": "用户资料",
+      "lang_pref": "语言偏好",
+      "theme": "主题选项"
+    },
+    "common": {
+      "save": "保存更改",
+      "cancel": "取消"
+    }
+  }
