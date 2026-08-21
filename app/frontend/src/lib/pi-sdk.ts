@@ -180,22 +180,22 @@ let _piInitPromise: Promise<void> | null = null;
 export async function initPiSdk(): Promise<void> {
   if (piSdkInitialized) return;
 
-  if (window.Pi) {
-    if (!_piInitPromise) {
-      const isProduction = window.location.hostname.includes('.pi') ||
-                           window.location.hostname.includes('mainnet');
-      _piInitPromise = window.Pi.init({
-        version: '2.0',
-        sandbox: !isProduction
-      }).then(() => {
-        piSdkInitialized = true;
-        console.log('[Atlasphere] Pi SDK initialized', { sandbox: !isProduction });
-      });
-    }
-    await _piInitPromise;
-  } else {
-    console.log('[Atlasphere] Pi SDK not available - running in standalone mode');
+  if (!window.Pi) {
+    console.error('[Atlasphere] Pi SDK not available');
+    throw new Error('Pi SDK not available');
   }
+
+  if (!_piInitPromise) {
+    _piInitPromise = window.Pi.init({
+      version: '2.0',
+      sandbox: false
+    }).then(() => {
+      piSdkInitialized = true;
+      console.log('[Atlasphere] Pi SDK initialized', { sandbox: false });
+    });
+  }
+
+  await _piInitPromise;
 }
 
 function notifyListeners() {
@@ -231,24 +231,49 @@ async function onIncompletePaymentFound(payment: APIPayment) {
     // Case 2: Payment not yet approved by server — approve it first
     if (!payment.status.developer_approved) {
       console.log('[Atlasphere] Approving incomplete payment:', payment.identifier);
-      await getClient().apiCall.invoke({
-        url: '/api/v1/pi-payments/approve',
+
+      const approveResponse = await fetch(`${API_URL}/api/pi-payments/approve-pi-real`, {
         method: 'POST',
-        data: { payment_id: payment.identifier },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          paymentId: payment.identifier,
+        }),
       });
+
+      if (!approveResponse.ok) {
+        const errorText = await approveResponse.text().catch(() => '');
+        throw new Error(
+          `Server approval failed with status ${approveResponse.status}${errorText ? `: ${errorText}` : ''}`
+        );
+      }
     }
 
-    // Case 3: Payment approved + transaction verified but not completed — complete it
-    if (payment.status.developer_approved && payment.transaction?.verified && !payment.status.developer_completed) {
+    // Case 3: Payment has verified transaction but is not completed — complete it
+    if (payment.transaction?.verified && !payment.status.developer_completed) {
       console.log('[Atlasphere] Completing incomplete payment:', payment.identifier);
-      await getClient().apiCall.invoke({
-        url: '/api/v1/pi-payments/complete',
+
+      const completeResponse = await fetch(`${API_URL}/api/pi-payments/complete-pi-real`, {
         method: 'POST',
-        data: {
-          payment_id: payment.identifier,
-          txid: payment.transaction.txid,
+        headers: {
+          'Content-Type': 'application/json',
         },
+        credentials: 'include',
+        body: JSON.stringify({
+          paymentId: payment.identifier,
+          txid: payment.transaction.txid,
+        }),
       });
+
+      if (!completeResponse.ok) {
+        const errorText = await completeResponse.text().catch(() => '');
+        throw new Error(
+          `Server completion failed with status ${completeResponse.status}${errorText ? `: ${errorText}` : ''}`
+        );
+      }
+
       console.log('[Atlasphere] Incomplete payment completed successfully:', payment.identifier);
     }
   } catch (error) {
@@ -330,123 +355,63 @@ async function fetchProfileFromBackend(): Promise<PiUser | null> {
 }
 
 // Helper: race a promise against a timeout
-function withTimeout<T>(promise: Promise<T>, ms: number, fallbackMsg: string): Promise<T> {
+function withTimeout<T>(promise: Promise<T>, ms: number, timeoutMsg: string): Promise<T> {
   return Promise.race([
     promise,
-    new Promise<never>((_, reject) => setTimeout(() => reject(new Error(fallbackMsg)), ms)),
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error(timeoutMsg)), ms)),
   ]);
 }
 
 // Authenticate with Pi Network using the real Pi SDK
 export async function authenticate(): Promise<PiUser> {
-  // Ensure Pi SDK is fully initialized (await Promise) before authenticating
   await initPiSdk();
 
-  if (isInPiBrowser() && window.Pi) {
-    // Real Pi SDK authentication inside Pi Browser
-    try {
-      // Scopes per Pi SDK docs: payments (required), username, wallet_address
-      const scopes: APIScopes = ['payments', 'username', 'wallet_address'];
-      const auth = await withTimeout(
-        window.Pi.authenticate(scopes, onIncompletePaymentFound),
-        15000,
-        'Pi authentication timeout'
-      );
-
-      // Store token for later use
-      localStorage.setItem('atlasphere_pi_token', auth.accessToken);
-
-      // Verify with backend and create/update profile
-      const backendUser = await verifyWithBackend(auth.accessToken);
-
-      if (backendUser) {
-        currentUser = backendUser;
-      } else {
-        // Keep current user only if backend session restore fails
-        currentUser = {
-          uid: auth.user.uid,
-          username: auth.user.username,
-          displayName: auth.user.username,
-          avatar: '🧑‍💻',
-          reputation: 0,
-          votingPower: 10,
-          piBalance: 0,
-          joinedDate: new Date().toISOString().split('T')[0],
-          proposalsCreated: 0,
-          votescast: 0,
-          contributions: 0,
-          badges: [],
-          level: 'bronze',
-          piLocked: 0,
-          streakDays: 0,
-          kycVerified: false,
-          language: 'fr'
-        };
-      }
-
-      localStorage.setItem('atlasphere_user', JSON.stringify(currentUser));
-      notifyListeners();
-      return currentUser;
-    } catch (error) {
-      console.warn('[Atlasphere] Pi authentication failed or timed out, falling back to sandbox:', error);
-      // Fall through to sandbox mode below
-    }
+  if (!isInPiBrowser() || !window.Pi) {
+    throw new Error('Pi authentication requires Pi Browser and Pi SDK');
   }
 
-  // Sandbox mode - try to get real user info from Atoms Cloud backend first
-  {
-    let realUsername = '';
-    try {
-      const client = getClient();
-      const meResponse = await client.auth.me();
-      if (meResponse && typeof meResponse === 'object') {
-        const me = meResponse as { username?: string; name?: string; email?: string };
-        realUsername = me.username || me.name || '';
-      }
-    } catch {
-      // Atoms Cloud auth not available - use saved or generate
+  try {
+    const scopes: APIScopes = ['username'];
+    const auth = await withTimeout(
+      window.Pi.authenticate(scopes, onIncompletePaymentFound),
+      15000,
+      'Pi authentication timeout'
+    );
+
+    localStorage.setItem('atlasphere_pi_token', auth.accessToken);
+
+    const backendUser = await verifyWithBackend(auth.accessToken);
+
+    if (backendUser) {
+      currentUser = backendUser;
+    } else {
+      currentUser = {
+        uid: auth.user.uid,
+        username: auth.user.username,
+        displayName: auth.user.username,
+        avatar: '🧑‍💻',
+        reputation: 0,
+        votingPower: 10,
+        piBalance: 0,
+        joinedDate: new Date().toISOString().split('T')[0],
+        proposalsCreated: 0,
+        votescast: 0,
+        contributions: 0,
+        badges: [],
+        level: 'bronze',
+        piLocked: 0,
+        streakDays: 0,
+        kycVerified: false,
+        language: 'fr'
+      };
     }
-
-    // If no real username from backend, try to restore from localStorage
-    if (!realUsername) {
-      try {
-        const saved = localStorage.getItem('atlasphere_user');
-        if (saved) {
-          const savedUser = JSON.parse(saved);
-          if (savedUser.username && savedUser.username !== 'pioneer_dao') {
-            realUsername = savedUser.username;
-          }
-        }
-      } catch {
-        // ignore
-      }
-    }
-
-    const username = realUsername || 'pioneer_dao';
-
-    currentUser = {
-      uid: 'pioneer_' + Math.random().toString(36).slice(2, 10),
-      username,
-      displayName: username,
-      avatar: '🧑‍💻',
-      reputation: 850,
-      votingPower: 42,
-      piBalance: 1247.5,
-      joinedDate: '2024-03-15',
-      proposalsCreated: 3,
-      votescast: 28,
-      contributions: 12,
-      badges: ['Early Voter', 'Proposal Creator', 'Top Contributor', 'Community Builder'],
-      level: 'silver',
-      piLocked: 500,
-      streakDays: 14,
-      kycVerified: true,
-      language: 'en'
-    };
 
     localStorage.setItem('atlasphere_user', JSON.stringify(currentUser));
     notifyListeners();
     return currentUser;
+  } catch (error) {
+    console.error('[Atlasphere] Pi authentication failed:', error);
+    throw error;
   }
 }
 
@@ -458,134 +423,77 @@ export async function createPiPayment(
   onApprove?: (paymentId: string) => Promise<void>,
   onComplete?: (paymentId: string, txid: string) => Promise<void>
 ): Promise<boolean> {
-  if (isInPiBrowser() && window.Pi) {
-    // Real Pi payment with backend approval/completion
-    try {
-      await window.Pi.createPayment(
-        { amount, memo, metadata },
-        {
-          onReadyForServerApproval: async (paymentId: string) => {
-            // Call backend to approve the payment
-            try {
-              await getClient().apiCall.invoke({
-                url: '/api/v1/pi-payments/approve',
-                method: 'POST',
-                data: { payment_id: paymentId },
-              });
-              console.log('[Atlasphere] Payment approved by server:', paymentId);
-            } catch (err) {
-              console.error('[Atlasphere] Server approval failed:', err);
-            }
-            if (onApprove) await onApprove(paymentId);
-          },
-          onReadyForServerCompletion: async (paymentId: string, txid: string) => {
-            // Call backend to complete the payment and record contribution
-            try {
-              await getClient().apiCall.invoke({
-                url: '/api/v1/pi-payments/complete',
-                method: 'POST',
-                data: {
-                  payment_id: paymentId,
-                  txid,
-                  project_id: parseInt(metadata.project_id || '0'),
-                  amount,
-                  pi_uid: currentUser?.uid || '',
-                },
-              });
-              console.log('[Atlasphere] Payment completed:', paymentId, txid);
+  try {
+    await initPiSdk();
 
-              // Check quest progress after funding
-              await checkQuestProgress('fund');
-            } catch (err) {
-              console.error('[Atlasphere] Server completion failed:', err);
+    if (!isInPiBrowser() || !window.Pi) {
+      throw new Error('Pi payment requires Pi Browser and Pi SDK');
+    }
+
+    await window.Pi.authenticate(['username'], onIncompletePaymentFound);
+
+    await window.Pi.createPayment(
+      { amount, memo, metadata },
+      {
+        onReadyForServerApproval: async (paymentId: string) => {
+          try {
+            const response = await fetch(`${API_URL}/api/pi-payments/approve-pi-real`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ paymentId })
+            });
+
+            if (!response.ok) {
+              throw new Error(`Server approval failed with status ${response.status}`);
             }
-            if (onComplete) await onComplete(paymentId, txid);
-          },
-          onCancel: (paymentId: string) => {
-            console.log('[Atlasphere] Payment cancelled:', paymentId);
-          },
-          onError: (error: Error) => {
-            console.error('[Atlasphere] Payment error:', error);
+
+            console.log('[Atlasphere] Payment approved by server:', paymentId);
+          } catch (err) {
+            console.error('[Atlasphere] Server approval failed:', err);
+            throw err;
           }
-        }
-      );
-      return true;
-    } catch (error) {
-      console.error('[Atlasphere] Payment creation failed:', error);
-      return false;
-    }
-  } else {
-    // Sandbox simulation with backend recording
-    await new Promise((r) => setTimeout(r, 800));
-    const fakePaymentId = 'pay_' + Math.random().toString(36).slice(2, 12);
-    const fakeTxid = 'tx_' + Math.random().toString(36).slice(2, 16);
 
-    // Simulate server approval
-    try {
-      await getClient().apiCall.invoke({
-        url: '/api/v1/pi-payments/approve',
-        method: 'POST',
-        data: { payment_id: fakePaymentId },
-      });
-    } catch {
-      // In sandbox, approval might fail due to missing PI_API_KEY - that's OK
-      console.log('[Atlasphere] Sandbox: skipping server approval');
-    }
-
-    if (onApprove) await onApprove(fakePaymentId);
-    await new Promise((r) => setTimeout(r, 500));
-
-    // Complete payment and record contribution via backend
-    try {
-      await getClient().apiCall.invoke({
-        url: '/api/v1/pi-payments/complete',
-        method: 'POST',
-        data: {
-          payment_id: fakePaymentId,
-          txid: fakeTxid,
-          project_id: parseInt(metadata.project_id || '0'),
-          amount,
-          pi_uid: currentUser?.uid || '',
+          if (onApprove) await onApprove(paymentId);
         },
-      });
-    } catch {
-      // Fallback: record contribution directly
-      console.log('[Atlasphere] Sandbox: recording contribution directly');
-      try {
-        await getClient().apiCall.invoke({
-          url: '/api/v1/entities/contributions',
-          method: 'POST',
-          data: {
-            project_id: parseInt(metadata.project_id || '0'),
-            amount,
-            transaction_id: fakeTxid,
-            payment_id: fakePaymentId,
-            status: 'completed',
-            pi_uid: currentUser?.uid || '',
-          },
-        });
-      } catch (e) {
-        console.error('[Atlasphere] Failed to record contribution:', e);
+
+        onReadyForServerCompletion: async (paymentId: string, txid: string) => {
+          try {
+            const response = await fetch(`${API_URL}/api/pi-payments/complete-pi-real`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ paymentId, txid })
+            });
+
+            if (!response.ok) {
+              throw new Error(`Server completion failed with status ${response.status}`);
+            }
+
+            console.log('[Atlasphere] Payment completed:', paymentId, txid);
+            await checkQuestProgress('fund');
+          } catch (err) {
+            console.error('[Atlasphere] Server completion failed:', err);
+            throw err;
+          }
+
+          if (onComplete) await onComplete(paymentId, txid);
+        },
+
+        onCancel: (paymentId: string) => {
+          console.log('[Atlasphere] Payment cancelled:', paymentId);
+        },
+
+        onError: (error: Error) => {
+          console.error('[Atlasphere] Payment error:', error);
+        }
       }
-    }
-
-    if (onComplete) await onComplete(fakePaymentId, fakeTxid);
-
-    // Update local user state
-    if (currentUser && currentUser.piBalance >= amount) {
-      currentUser = {
-        ...currentUser,
-        piBalance: currentUser.piBalance - amount,
-        contributions: currentUser.contributions + 1
-      };
-      localStorage.setItem('atlasphere_user', JSON.stringify(currentUser));
-      notifyListeners();
-    }
-
-    // Check quest progress
-    await checkQuestProgress('fund');
+    );
 
     return true;
+  } catch (error) {
+    console.error('[Atlasphere] Payment creation failed:', error);
+    return false;
   }
 }
 
@@ -798,7 +706,7 @@ export async function autoAuthenticate(): Promise<PiUser | null> {
     return currentUser;
   } catch (error) {
     console.warn('[Atlasphere] Auto-authentication failed, user can authenticate manually:', error);
-    // Restore from localStorage as fallback
+    // Restore user session from localStorage
     restoreSession();
     return currentUser;
   }
