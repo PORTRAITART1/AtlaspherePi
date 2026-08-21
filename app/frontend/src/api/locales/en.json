@@ -1,0 +1,30 @@
+{
+    "api_doc": {
+      "title": "API Documentation",
+      "intro": "Welcome to the official AtlaspherePI API documentation. Here you will find all the information needed to integrate with our platform.",
+      "auth_section": "Authentication",
+      "endpoints_section": "Endpoints"
+    },
+    "security": {
+      "title": "Security",
+      "2fa": "Two-Factor Authentication",
+      "api_keys": "API Keys",
+      "activity_log": "Activity Log"
+    },
+    "reputation": {
+      "title": "Reputation",
+      "score": "Overall Score",
+      "trends": "Trends",
+      "factors": "Influencing Factors"
+    },
+    "settings": {
+      "title": "Settings",
+      "profile": "User Profile",
+      "lang_pref": "Language Preference",
+      "theme": "Theme Options"
+    },
+    "common": {
+      "save": "Save Changes",
+      "cancel": "Cancel"
+    }
+  }

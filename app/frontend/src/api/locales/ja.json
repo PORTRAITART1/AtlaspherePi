@@ -1,0 +1,30 @@
+{
+    "api_doc": {
+      "title": "APIドキュメント",
+      "intro": "AtlaspherePI公式APIドキュメントへようこそ。ここでは、当社のプラットフォームと統合するために必要なすべての情報を見つけることができます。",
+      "auth_section": "認証",
+      "endpoints_section": "エンドポイント"
+    },
+    "security": {
+      "title": "セキュリティ",
+      "2fa": "2要素認証",
+      "api_keys": "APIキー",
+      "activity_log": "アクティビティログ"
+    },
+    "reputation": {
+      "title": "評判",
+      "score": "総合スコア",
+      "trends": "トレンド",
+      "factors": "影響要因"
+    },
+    "settings": {
+      "title": "設定",
+      "profile": "ユーザープロフィール",
+      "lang_pref": "言語設定",
+      "theme": "テーマオプション"
+    },
+    "common": {
+      "save": "変更を保存",
+      "cancel": "キャンセル"
+    }
+  }
