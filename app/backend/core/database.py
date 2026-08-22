@@ -92,3 +92,20 @@ class DatabaseManager:
 
 # Exporter une instance unique
 db_manager = DatabaseManager()
+
+
+from typing import AsyncGenerator
+
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    """Dependency to get async database session."""
+    if not db_manager.async_session_maker:
+        await db_manager.init_db()
+    async with db_manager.async_session_maker() as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
+        finally:
+            await session.close()
