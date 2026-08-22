@@ -89,9 +89,9 @@ async def initialize_services_once():
                 sys.path.append("/var/task/backend")
 
             # MODULE_IMPORTS_START
-            from services.database import initialize_database
-            from services.mock_data import initialize_mock_data
-            from services.auth import initialize_admin_user
+            from app.backend.services.database import initialize_database
+            from app.backend.services.mock_data import initialize_mock_data
+            from app.backend.services.auth import initialize_admin_user
             # MODULE_IMPORTS_END
 
             # MODULE_STARTUP_START

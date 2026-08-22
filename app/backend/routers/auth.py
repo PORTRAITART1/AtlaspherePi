@@ -16,16 +16,16 @@ from app.backend.core.auth import (
 )
 from app.backend.core.config import settings
 from app.backend.core.database import get_db
-from dependencies.auth import get_current_user
+from app.backend.dependencies.auth import get_current_user
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
 from app.backend.models.auth import User
-from schemas.auth import (
+from app.backend.schemas.auth import (
     PlatformTokenExchangeRequest,
     TokenExchangeResponse,
     UserResponse,
 )
-from services.auth import AuthService
+from app.backend.services.auth import AuthService
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/api/v1/auth", tags=["authentication"])

@@ -8,8 +8,8 @@ from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.backend.core.database import get_db
-from dependencies.auth import get_current_user
-from schemas.auth import UserResponse
+from app.backend.dependencies.auth import get_current_user
+from app.backend.schemas.auth import UserResponse
 from app.backend.models.quests import Quests
 from app.backend.models.quest_progress import Quest_progress
 from app.backend.models.pi_profiles import Pi_profiles

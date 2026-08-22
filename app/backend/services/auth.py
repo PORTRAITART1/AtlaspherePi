@@ -83,7 +83,7 @@ class AuthService:
         await self.db.commit()
 
     async def get_and_delete_oidc_state(self, state: str) -> Optional[dict]:
-        """Get and delete OIDC state from database."""
+        """Get and delete OIDC state from app.backend.database."""
         # Clean up expired states first
         await self.db.execute(delete(OIDCState).where(OIDCState.expires_at < datetime.now(timezone.utc)))
 

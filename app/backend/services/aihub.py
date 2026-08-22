@@ -16,8 +16,8 @@ import fitz
 from app.backend.core.config import settings
 import httpx
 from openai import AsyncOpenAI
-from schemas.aihub import AnalyzePdfRequest, AnalyzePdfResponse
-from schemas.aihub import (
+from app.backend.schemas.aihub import AnalyzePdfRequest, AnalyzePdfResponse
+from app.backend.schemas.aihub import (
     GenAudioRequest,
     GenAudioResponse,
     GenImgRequest,

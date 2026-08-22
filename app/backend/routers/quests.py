@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.backend.core.database import get_db
-from services.quests import QuestsService
+from app.backend.services.quests import QuestsService
 
 # Set up logging
 logger = logging.getLogger(__name__)
