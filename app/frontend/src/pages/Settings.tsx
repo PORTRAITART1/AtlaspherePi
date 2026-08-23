@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PageTransition from '@/components/PageTransition';
@@ -7,6 +8,9 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+
+const NETWORK_CONFIG_STORAGE_KEY = 'atlaspherepi_network_config';
+const MAINNET_CHECKLIST_STORAGE_KEY = 'atlaspherepi_mainnet_checklist';
 
 interface NetworkConfig {
   network: 'mainnet';
@@ -20,6 +24,7 @@ interface NetworkConfig {
 }
 
 export default function Settings() {
+  const { t } = useTranslation();
   const [config, setConfig] = useState<NetworkConfig>({
     network: 'mainnet',
     sandbox: false,
@@ -33,7 +38,7 @@ export default function Settings() {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    const savedConfig = localStorage.getItem('atlasphere_network_config');
+    const savedConfig = localStorage.getItem(NETWORK_CONFIG_STORAGE_KEY);
     if (savedConfig) {
       try {
         const parsedConfig = JSON.parse(savedConfig);
@@ -44,7 +49,7 @@ export default function Settings() {
           piServerUrl: 'https://api.minepi.com',
         });
       } catch {
-        localStorage.removeItem('atlasphere_network_config');
+        localStorage.removeItem(NETWORK_CONFIG_STORAGE_KEY);
       }
     }
   }, []);
@@ -69,7 +74,7 @@ export default function Settings() {
   };
 
   const saveConfig = () => {
-    localStorage.setItem('atlasphere_network_config', JSON.stringify(config));
+    localStorage.setItem(NETWORK_CONFIG_STORAGE_KEY, JSON.stringify(config));
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -88,14 +93,14 @@ export default function Settings() {
   ];
 
   const [checklist, setChecklist] = useState<Record<string, boolean>>(() => {
-    const saved = localStorage.getItem('atlasphere_mainnet_checklist');
+    const saved = localStorage.getItem(MAINNET_CHECKLIST_STORAGE_KEY);
     return saved ? JSON.parse(saved) : {};
   });
 
   const toggleChecklist = (id: string) => {
     const updated = { ...checklist, [id]: !checklist[id] };
     setChecklist(updated);
-    localStorage.setItem('atlasphere_mainnet_checklist', JSON.stringify(updated));
+    localStorage.setItem(MAINNET_CHECKLIST_STORAGE_KEY, JSON.stringify(updated));
   };
 
   const checklistProgress = Object.values(checklist).filter(Boolean).length;
@@ -113,8 +118,8 @@ export default function Settings() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <h1 className="text-3xl font-bold text-white mb-2">⚙️ Configuration Réseau</h1>
-            <p className="text-gray-400 mb-8">Gérez la configuration Mainnet de Atlasphere</p>
+            <h1 className="text-3xl font-bold text-white mb-2">{t('settings.title', '⚙️ Configuration Réseau')}</h1>
+            <p className="text-gray-400 mb-8">{t('settings.description', 'Gérez la configuration Mainnet de AtlaspherePi')}</p>
           </motion.div>
 
           {/* Network Toggle */}

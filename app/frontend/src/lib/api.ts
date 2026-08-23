@@ -1,4 +1,4 @@
-// Atlasphere API Service - Connects frontend to real backend
+// AtlaspherePi API Service - Connects frontend to real backend
 import { createClient } from '@metagptx/web-sdk';
 
 // Lazy-initialize client to avoid blocking on module load

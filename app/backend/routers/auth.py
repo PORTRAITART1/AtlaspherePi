@@ -54,7 +54,7 @@ def get_dynamic_backend_url(request: Request) -> str:
 
     effective_host = mgx_external_domain or x_forwarded_host or host
     if not effective_host:
-        logger.warning("[get_dynamic_backend_url] No host found, fallback to %s", settings.backend_url)
+        logger.warning("[get_dynamic_backend_url] No host found, using default %s", settings.backend_url)
         return settings.backend_url
 
     dynamic_url = _local_patch(f"{scheme}://{effective_host}")

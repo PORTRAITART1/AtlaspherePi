@@ -33,7 +33,7 @@ const MARKETING_ASSETS: AssetItem[] = [
 ];
 
 const DOCS_ASSETS: AssetItem[] = [
-  { name: 'MARKETING_PACK_ATLASPHERE.md', url: '/docs/MARKETING_PACK_ATLASPHERE.md', folder: 'docs' },
+  { name: 'MARKETING_PACK_ATLASPHEREPI.md', url: '/docs/MARKETING_PACK_ATLASPHEREPI.md', folder: 'docs' },
   { name: 'FEUILLE_DE_ROUTE_MAINNET.md', url: '/docs/FEUILLE_DE_ROUTE_MAINNET.md', folder: 'docs' },
   { name: 'MARKETING_ASSETS_URLS.md', url: '/docs/MARKETING_ASSETS_URLS.md', folder: 'docs' },
 ];
@@ -84,7 +84,7 @@ export default function MarketingDownload() {
     try {
       setCurrentFile('Création du ZIP...');
       const content = await zip.generateAsync({ type: 'blob' });
-      saveAs(content, 'marketing-pack-atlasphere.zip');
+      saveAs(content, 'marketing-pack-atlaspherepi.zip');
       setDone(true);
     } catch (err) {
       setError('Erreur lors de la création du ZIP. Veuillez réessayer.');
@@ -116,11 +116,11 @@ export default function MarketingDownload() {
           <div className="inline-flex items-center gap-3 mb-4">
             <Package className="w-10 h-10 text-amber-400" />
             <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 to-purple-400 bg-clip-text text-transparent">
-              Pack Marketing Atlasphere
+              Pack Marketing AtlaspherePi
             </h1>
           </div>
           <p className="text-slate-300 text-lg max-w-2xl mx-auto">
-            Téléchargez tous les visuels marketing avec le logo Atlasphere intégré.
+            Téléchargez tous les visuels marketing avec le logo AtlaspherePi intégré.
             10 images + 8 bannières + documents marketing.
           </p>
         </div>

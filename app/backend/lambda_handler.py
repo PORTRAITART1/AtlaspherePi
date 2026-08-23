@@ -1,6 +1,6 @@
 """
 AWS Lambda handler for unified frontend and backend with Nginx reverse proxy
-This handler simulates Nginx routing logic within Lambda
+This handler emulates Nginx routing logic within Lambda
 """
 import asyncio
 import base64
@@ -166,7 +166,7 @@ def get_mangum_handler_sync():
 
 def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     """
-    AWS Lambda handler function that simulates Nginx routing
+    AWS Lambda handler function that emulates Nginx routing
     """
     try:
         # Initialize dynamic routes on first request (cold start)
@@ -189,7 +189,7 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             headers = event.get("headers", {})
             query_params = event.get("queryStringParameters", {})
         else:
-            # Fallback for empty or malformed events
+            # Default handling for empty or malformed events
             path = "/"
             headers = {}
             query_params = {}
@@ -322,7 +322,7 @@ def serve_frontend() -> Dict[str, Any]:
         }
         return response
     else:
-        # Fallback to a simple HTML response
+        # Return a simple HTML response
         html_content = """
         <!DOCTYPE html>
         <html>
@@ -508,7 +508,7 @@ def sanitize_config(config: dict) -> dict:
                     sanitized[key] = url
                 else:
                     logger.debug(f"Invalid API_BASE_URL format: {url}")
-                    sanitized[key] = "http://127.0.0.1:8000"  # Safe fallback
+                    sanitized[key] = "http://127.0.0.1:8000"  # Safe default
             else:
                 sanitized[key] = config[key]
 

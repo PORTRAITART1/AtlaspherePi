@@ -1,6 +1,6 @@
 {
-  "name": "Atlasphere - Gouvernance Pi Network",
-  "short_name": "Atlasphere",
+  "name": "AtlaspherePi - Gouvernance Pi Network",
+  "short_name": "AtlaspherePi",
   "description": "Plateforme de gouvernance décentralisée pour les Pionniers Pi Network",
   "start_url": "/",
   "display": "standalone",

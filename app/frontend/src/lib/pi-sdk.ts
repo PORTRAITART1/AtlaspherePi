@@ -1,4 +1,4 @@
-// Pi Network SDK v2.0 Integration for Atlasphere
+// Pi Network SDK v2.0 Integration for AtlaspherePi
 // Aligned with @pinetwork-js/sdk and Pi Develop platform standards
 // Reference: https://github.com/pi-apps/pi-platform-docs/blob/master/SDK_reference.md
 import { createClient } from '@metagptx/web-sdk';
@@ -66,7 +66,7 @@ export interface AuthResult {
 export type APIScope = 'payments' | 'username' | 'roles' | 'wallet_address';
 export type APIScopes = APIScope[];
 
-// --- Atlasphere User Profile (extends Pi user with app-specific data) ---
+// --- AtlaspherePi User Profile (extends Pi user with app-specific data) ---
 
 export interface PiUser {
   uid: string;
@@ -181,7 +181,7 @@ export async function initPiSdk(): Promise<void> {
   if (piSdkInitialized) return;
 
   if (!window.Pi) {
-    console.error('[Atlasphere] Pi SDK not available');
+    console.error('[AtlaspherePi] Pi SDK not available');
     throw new Error('Pi SDK not available');
   }
 
@@ -191,7 +191,7 @@ export async function initPiSdk(): Promise<void> {
       sandbox: false
     }).then(() => {
       piSdkInitialized = true;
-      console.log('[Atlasphere] Pi SDK initialized', { sandbox: false });
+      console.log('[AtlaspherePi] Pi SDK initialized', { sandbox: false });
     });
   }
 
@@ -219,18 +219,18 @@ export function setCurrentUser(user: PiUser | null): void {
 // Handle incomplete payments found during authentication
 // Per Pi SDK spec, this is called when an unfinished payment is detected
 async function onIncompletePaymentFound(payment: APIPayment) {
-  console.log('[Atlasphere] Incomplete payment found:', payment.identifier, payment.status);
+  console.log('[AtlaspherePi] Incomplete payment found:', payment.identifier, payment.status);
 
   try {
     // Case 1: Payment was cancelled — nothing to do
     if (payment.status.cancelled) {
-      console.log('[Atlasphere] Payment was cancelled, skipping:', payment.identifier);
+      console.log('[AtlaspherePi] Payment was cancelled, skipping:', payment.identifier);
       return;
     }
 
     // Case 2: Payment not yet approved by server — approve it first
     if (!payment.status.developer_approved) {
-      console.log('[Atlasphere] Approving incomplete payment:', payment.identifier);
+      console.log('[AtlaspherePi] Approving incomplete payment:', payment.identifier);
 
       const approveResponse = await fetch(`${API_URL}/api/pi-payments/approve-pi-real`, {
         method: 'POST',
@@ -253,7 +253,7 @@ async function onIncompletePaymentFound(payment: APIPayment) {
 
     // Case 3: Payment has verified transaction but is not completed — complete it
     if (payment.transaction?.verified && !payment.status.developer_completed) {
-      console.log('[Atlasphere] Completing incomplete payment:', payment.identifier);
+      console.log('[AtlaspherePi] Completing incomplete payment:', payment.identifier);
 
       const completeResponse = await fetch(`${API_URL}/api/pi-payments/complete-pi-real`, {
         method: 'POST',
@@ -274,10 +274,10 @@ async function onIncompletePaymentFound(payment: APIPayment) {
         );
       }
 
-      console.log('[Atlasphere] Incomplete payment completed successfully:', payment.identifier);
+      console.log('[AtlaspherePi] Incomplete payment completed successfully:', payment.identifier);
     }
   } catch (error) {
-    console.error('[Atlasphere] Failed to resume incomplete payment:', payment.identifier, error);
+    console.error('[AtlaspherePi] Failed to resume incomplete payment:', payment.identifier, error);
   }
 }
 
@@ -313,7 +313,7 @@ async function verifyWithBackend(accessToken: string): Promise<PiUser | null> {
       };
     }
   } catch (error) {
-    console.warn('[Atlasphere] Backend verification failed, using local profile:', error);
+    console.warn('[AtlaspherePi] Backend verification failed, using local profile:', error);
   }
   return null;
 }
@@ -406,11 +406,11 @@ export async function authenticate(): Promise<PiUser> {
       };
     }
 
-    localStorage.setItem('atlasphere_user', JSON.stringify(currentUser));
+    localStorage.setItem('atlaspherepi_user', JSON.stringify(currentUser));
     notifyListeners();
     return currentUser;
   } catch (error) {
-    console.error('[Atlasphere] Pi authentication failed:', error);
+    console.error('[AtlaspherePi] Pi authentication failed:', error);
     throw error;
   }
 }
@@ -448,9 +448,9 @@ export async function createPiPayment(
               throw new Error(`Server approval failed with status ${response.status}`);
             }
 
-            console.log('[Atlasphere] Payment approved by server:', paymentId);
+            console.log('[AtlaspherePi] Payment approved by server:', paymentId);
           } catch (err) {
-            console.error('[Atlasphere] Server approval failed:', err);
+            console.error('[AtlaspherePi] Server approval failed:', err);
             throw err;
           }
 
@@ -470,10 +470,10 @@ export async function createPiPayment(
               throw new Error(`Server completion failed with status ${response.status}`);
             }
 
-            console.log('[Atlasphere] Payment completed:', paymentId, txid);
+            console.log('[AtlaspherePi] Payment completed:', paymentId, txid);
             await checkQuestProgress('fund');
           } catch (err) {
-            console.error('[Atlasphere] Server completion failed:', err);
+            console.error('[AtlaspherePi] Server completion failed:', err);
             throw err;
           }
 
@@ -481,18 +481,18 @@ export async function createPiPayment(
         },
 
         onCancel: (paymentId: string) => {
-          console.log('[Atlasphere] Payment cancelled:', paymentId);
+          console.log('[AtlaspherePi] Payment cancelled:', paymentId);
         },
 
         onError: (error: Error) => {
-          console.error('[Atlasphere] Payment error:', error);
+          console.error('[AtlaspherePi] Payment error:', error);
         }
       }
     );
 
     return true;
   } catch (error) {
-    console.error('[Atlasphere] Payment creation failed:', error);
+    console.error('[AtlaspherePi] Payment creation failed:', error);
     return false;
   }
 }
@@ -527,7 +527,7 @@ export async function submitGovernanceVote(projectId: number, voteType: 'for' | 
         votescast: currentUser.votescast + 1,
         reputation: currentUser.reputation + 5,
       };
-      localStorage.setItem('atlasphere_user', JSON.stringify(currentUser));
+      localStorage.setItem('atlaspherepi_user', JSON.stringify(currentUser));
       notifyListeners();
 
       // Check quest progress
@@ -596,7 +596,7 @@ export async function checkQuestProgress(actionType: 'vote' | 'fund' | 'login' |
     });
 
     if (response?.data?.newly_completed?.length > 0) {
-      console.log('[Atlasphere] Quests completed:', response.data.newly_completed);
+      console.log('[AtlaspherePi] Quests completed:', response.data.newly_completed);
     }
     return response?.data?.newly_completed || [];
   } catch {
@@ -606,7 +606,7 @@ export async function checkQuestProgress(actionType: 'vote' | 'fund' | 'login' |
 
 export function logout() {
   currentUser = null;
-  localStorage.removeItem('atlasphere_user');
+  localStorage.removeItem('atlaspherepi_user');
   localStorage.removeItem('atlasphere_pi_token');
   notifyListeners();
 }
@@ -615,7 +615,7 @@ export function logout() {
 export async function contributePI(amount: number): Promise<boolean> {
   return createPiPayment(
     amount,
-    'Atlasphere contribution',
+    'AtlaspherePi contribution',
     { type: 'donation' }
   );
 }
@@ -628,7 +628,7 @@ export async function castVote(): Promise<boolean> {
       votescast: currentUser.votescast + 1,
       reputation: currentUser.reputation + 5
     };
-    localStorage.setItem('atlasphere_user', JSON.stringify(currentUser));
+    localStorage.setItem('atlaspherepi_user', JSON.stringify(currentUser));
     notifyListeners();
     return true;
   }
@@ -638,7 +638,7 @@ export async function castVote(): Promise<boolean> {
 // Restore user from localStorage on load
 export function restoreSession(): void {
   try {
-    const saved = localStorage.getItem('atlasphere_user');
+    const saved = localStorage.getItem('atlaspherepi_user');
     if (saved) {
       currentUser = JSON.parse(saved);
       notifyListeners();
@@ -700,12 +700,12 @@ export async function autoAuthenticate(): Promise<PiUser | null> {
       };
     }
 
-    localStorage.setItem('atlasphere_user', JSON.stringify(currentUser));
+    localStorage.setItem('atlaspherepi_user', JSON.stringify(currentUser));
     notifyListeners();
-    console.log('[Atlasphere] Auto-authenticated Pioneer:', currentUser.username);
+    console.log('[AtlaspherePi] Auto-authenticated Pioneer:', currentUser.username);
     return currentUser;
   } catch (error) {
-    console.warn('[Atlasphere] Auto-authentication failed, user can authenticate manually:', error);
+    console.warn('[AtlaspherePi] Auto-authentication failed, user can authenticate manually:', error);
     // Restore user session from localStorage
     restoreSession();
     return currentUser;
@@ -719,7 +719,7 @@ export function shareOnPi(title: string, message: string): void {
   if (window.Pi) {
     window.Pi.openShareDialog(title, message);
   } else {
-    // Fallback: use Web Share API or copy to clipboard
+    // Use Web Share API or copy to clipboard
     if (navigator.share) {
       navigator.share({ title, text: message }).catch(() => {});
     } else {
@@ -733,20 +733,20 @@ export function openPiConversation(conversationId: number): void {
   if (window.Pi) {
     window.Pi.openConversation(conversationId);
   } else {
-    console.log('[Atlasphere] openConversation not available outside Pi Browser');
+    console.log('[AtlaspherePi] openConversation not available outside Pi Browser');
   }
 }
 
 /** Share a proposal on Pi Network */
 export function shareProposal(proposalTitle: string, proposalId: number): void {
-  const message = `🗳️ Découvrez cette proposition sur Atlasphere: "${proposalTitle}" - Votez et participez à la gouvernance Pi! ${window.location.origin}/proposal/${proposalId}`;
-  shareOnPi('Atlasphere - Proposition', message);
+  const message = `🗳️ Découvrez cette proposition sur AtlaspherePi: "${proposalTitle}" - Votez et participez à la gouvernance Pi! ${window.location.origin}/proposal/${proposalId}`;
+  shareOnPi('AtlaspherePi - Proposition', message);
 }
 
 /** Share a funding project on Pi Network */
 export function shareFundingProject(projectTitle: string, projectId: number): void {
-  const message = `💰 Projet à financer sur Atlasphere: "${projectTitle}" - Contribuez avec vos Pi! ${window.location.origin}/proposal/${projectId}`;
-  shareOnPi('Atlasphere - Financement', message);
+  const message = `💰 Projet à financer sur AtlaspherePi: "${projectTitle}" - Contribuez avec vos Pi! ${window.location.origin}/proposal/${projectId}`;
+  shareOnPi('AtlaspherePi - Financement', message);
 }
 
 // --- PiRC2 Subscription Helpers ---

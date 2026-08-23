@@ -12,13 +12,13 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
               <img
-                src="/assets/logo-atlasphere-transparent.png"
-                alt="Atlasphere Logo"
+                src="/icons/icon-192.png"
+                alt="AtlaspherePi Logo"
                 className="w-9 h-9 object-contain"
                 style={{ filter: 'brightness(0) saturate(100%) invert(72%) sepia(58%) saturate(600%) hue-rotate(2deg) brightness(103%) contrast(104%)' }}
               />
               <span className="text-lg font-bold bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-                Atlasphere
+                AtlaspherePi
               </span>
             </div>
             <p className="text-gray-400 text-sm max-w-md leading-relaxed">

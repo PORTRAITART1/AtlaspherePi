@@ -1,4 +1,4 @@
-# 📦 Pack Marketing Complet — Atlasphere
+# 📦 Pack Marketing Complet — AtlaspherePi
 ## Feuille de Route vers le Mainnet Pi Network
 
 ---
@@ -6,7 +6,7 @@
 # 🎯 POSITIONNEMENT + BRAND KIT
 
 ## Positionnement
-**Atlasphere** est la première plateforme de gouvernance décentralisée et de financement participatif construite par et pour les Pionniers Pi Network. Elle combine DAO, EcoChain AI, gamification et paiements Pi natifs.
+**AtlaspherePi** est la première plateforme de gouvernance décentralisée et de financement participatif construite par et pour les Pionniers Pi Network. Elle combine DAO, EcoChain AI, gamification et paiements Pi natifs.
 
 ## Slogan Principal (EN)
 > **"Govern. Fund. Build. — The Pioneer Way."**
@@ -18,7 +18,7 @@
 
 ## 6 CTA (EN)
 1. "Join the Pioneer Beta"
-2. "Try Atlasphere Now"
+2. "Try AtlaspherePi Now"
 3. "Vote with Your Pi"
 4. "Fund What Matters"
 5. "Become an Early Adopter"
@@ -68,13 +68,13 @@
 # 🗣️ MESSAGE FIRESIDE (FR)
 
 ```
-🌍 Atlasphere — La gouvernance Pi, par les Pionniers.
+🌍 AtlaspherePi — La gouvernance Pi, par les Pionniers.
 
 Chers Pionniers,
 
 Imaginez une plateforme où VOTRE voix compte vraiment. Où vous votez sur les projets communautaires, financez les initiatives locales avec vos Pi, et gagnez en réputation à chaque action.
 
-C'est Atlasphere. 🚀
+C'est AtlaspherePi. 🚀
 
 ✅ Votez sur des propositions (gouvernance quadratique)
 ✅ Financez des projets avec Pi (escrow sécurisé)
@@ -97,9 +97,9 @@ Ensemble, construisons l'écosystème Pi. 💜
 # 🏢 MESSAGE CORPTIME / CORPFM (FR)
 
 ```
-📢 [ANNONCE] Atlasphere recrute ses testeurs Pionniers !
+📢 [ANNONCE] AtlaspherePi recrute ses testeurs Pionniers !
 
-🔹 Qu'est-ce qu'Atlasphere ?
+🔹 Qu'est-ce qu'AtlaspherePi ?
 La 1ère plateforme DAO + Crowdfunding + EcoChain AI sur Pi Network.
 Gouvernance décentralisée. Paiements Pi natifs. Impact climatique.
 
@@ -127,7 +127,7 @@ Gouvernance décentralisée. Paiements Pi natifs. Impact climatique.
 ```
 🚀 Hey les Pionniers ! 
 
-Atlasphere est en phase beta et on a besoin de testeurs 🧪
+AtlaspherePi est en phase beta et on a besoin de testeurs 🧪
 
 C'est quoi ? → Une app DAO + Crowdfunding Pi + EcoChain AI
 → Tu votes, tu finances, tu gagnes des récompenses 🏆
@@ -150,12 +150,12 @@ Qui teste avec moi ? 👇
 
 ```
 ═══════════════════════════════════════
-🌟 APPEL AUX PIONNIERS — ATLASPHERE BETA 🌟
+🌟 APPEL AUX PIONNIERS — ATLASPHEREPI BETA 🌟
 ═══════════════════════════════════════
 
 Pionniers du monde entier,
 
-Atlasphere entre en phase de test massif. Notre objectif : prouver à Pi Network que notre communauté est prête pour le Mainnet.
+AtlaspherePi entre en phase de test massif. Notre objectif : prouver à Pi Network que notre communauté est prête pour le Mainnet.
 
 🎯 MISSION : Tester l'application et donner votre feedback
 
@@ -186,7 +186,7 @@ Plus nous avons de testeurs actifs, plus nos chances sont élevées.
 Partagez ce message avec 3 Pionniers ! 🔄
 
 ═══════════════════════════════════════
-Atlasphere — Govern. Fund. Build. The Pioneer Way.
+AtlaspherePi — Govern. Fund. Build. The Pioneer Way.
 ═══════════════════════════════════════
 ```
 
@@ -196,7 +196,7 @@ Atlasphere — Govern. Fund. Build. The Pioneer Way.
 
 | # | Titre | Texte sur l'image (EN) | Layout |
 |---|-------|----------------------|--------|
-| 1 | Hero Governance Globe | "ATLASPHERE — Govern. Fund. Build." | Globe interconnecté centre, texte haut, fond space indigo |
+| 1 | Hero Governance Globe | "ATLASPHEREPI — Govern. Fund. Build." | Globe interconnecté centre, texte haut, fond space indigo |
 | 2 | Community Voting | "Your Voice. Your Pi. Your Future." | Groupe de pionniers votant, hologrammes, fond purple |
 | 3 | Crowdfunding Pi | "Fund Projects with Pi" | Coins Pi → vault, milestones verts, fond indigo |
 | 4 | EcoChain AI | "EcoChain AI — Climate Intelligence" | Terre + data streams + AI, fond vert→indigo |
@@ -215,10 +215,10 @@ Atlasphere — Govern. Fund. Build. The Pioneer Way.
 
 ### Bannière Animée 1 : "Governance Flow"
 - **Animation** : Slide-in de gauche à droite
-- **Frame 1** : Fond indigo vide → texte "ATLASPHERE" slide-in depuis la gauche
+- **Frame 1** : Fond indigo vide → texte "ATLASPHEREPI" slide-in depuis la gauche
 - **Frame 2** : Globe apparaît au centre avec rotation lente
 - **Frame 3** : CTA "Join the Pioneer Beta →" pulse en or en bas
-- **Texte final** : "ATLASPHERE — Govern. Fund. Build. | Join the Pioneer Beta →"
+- **Texte final** : "ATLASPHEREPI — Govern. Fund. Build. | Join the Pioneer Beta →"
 - **Taille** : 728x90 (leaderboard)
 
 ### Bannière Animée 2 : "Pi Payment Pulse"
@@ -249,7 +249,7 @@ Atlasphere — Govern. Fund. Build. The Pioneer Way.
 
 ### Bannière Statique 1 : "Main Hero"
 - **Layout** : Logo gauche, titre centre, CTA droite
-- **Titre** : "ATLASPHERE"
+- **Titre** : "ATLASPHEREPI"
 - **Sous-titre** : "Decentralized Governance for Pi Pioneers"
 - **CTA** : "Try Beta Now →"
 - **Éléments** : Globe, nœuds connectés, gradient indigo→purple
@@ -273,7 +273,7 @@ Atlasphere — Govern. Fund. Build. The Pioneer Way.
 - **Layout** : Countdown visuel, texte urgent, CTA proéminent
 - **Titre** : "Mainnet Submission in 30 Days"
 - **Sous-titre** : "Help us reach 1000 testers"
-- **CTA** : "Test Atlasphere Now"
+- **CTA** : "Test AtlaspherePi Now"
 - **Éléments** : Timer, barre de progression, fond indigo avec accent or
 - **Taille** : 468x60
 
@@ -283,7 +283,7 @@ Atlasphere — Govern. Fund. Build. The Pioneer Way.
 
 ## Phase M1 : Préparation (Semaine 1-2)
 - [ ] Finaliser le pack marketing (images, bannières, textes) ✅
-- [ ] Créer les comptes sociaux Atlasphere (Twitter/X, Telegram, Discord)
+- [ ] Créer les comptes sociaux AtlaspherePi (Twitter/X, Telegram, Discord)
 - [ ] Configurer le formulaire de feedback in-app (déjà fait ✅)
 - [ ] Préparer le tracking analytics (nombre de testeurs, actions, feedback)
 - [ ] Vérifier que l'app fonctionne parfaitement en sandbox Pi Browser
@@ -373,4 +373,4 @@ Atlasphere — Govern. Fund. Build. The Pioneer Way.
 
 ---
 
-*Document généré le 2026-08-03 — Atlasphere Marketing Pack v1.0*
+*Document généré le 2026-08-03 — AtlaspherePi Marketing Pack v1.0*

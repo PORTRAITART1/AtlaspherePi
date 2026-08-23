@@ -52,7 +52,7 @@ class AuthService:
         try:
             expires_minutes = int(getattr(settings, "jwt_expire_minutes", 60))
         except (TypeError, ValueError):
-            logger.warning("Invalid JWT_EXPIRE_MINUTES value; fallback to 60 minutes")
+            logger.warning("Invalid JWT_EXPIRE_MINUTES value; using default 60 minutes")
             expires_minutes = 60
         expires_at = datetime.now(timezone.utc) + timedelta(minutes=expires_minutes)
 

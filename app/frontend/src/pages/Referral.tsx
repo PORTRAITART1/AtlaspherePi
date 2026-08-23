@@ -10,7 +10,7 @@ export default function Referral() {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(`https://atlasphere.app/join?ref=${stats.code}`);
+    navigator.clipboard.writeText(`https://atlaspherepi.com/join?ref=${stats.code}`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -18,9 +18,9 @@ export default function Referral() {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'Rejoins Atlasphere !',
+        title: 'Rejoins AtlaspherePi !',
         text: `Utilise mon code ${stats.code} pour gagner des ECO tokens en rejoignant la communauté écologique !`,
-        url: `https://atlasphere.app/join?ref=${stats.code}`,
+        url: `https://atlaspherepi.com/join?ref=${stats.code}`,
       });
     }
   };
