@@ -5,7 +5,7 @@
 
 ## 📋 RÉSUMÉ EXÉCUTIF
 
-**Objectif** : Faire accepter Atlasphere sur le Mainnet Pi Network
+**Objectif** : Faire accepter AtlaspherePi sur le Mainnet Pi Network
 **Durée estimée** : 16-20 semaines
 **KPI principal** : 1000+ testeurs actifs avec métriques d'engagement solides
 **Prérequis technique** : Pi SDK v2.0 conforme (✅ déjà implémenté)
@@ -15,7 +15,7 @@
 ## 🔑 CRITÈRES D'ACCEPTATION MAINNET (Ce que Pi Network évalue)
 
 1. **Utilité réelle** — L'app résout un vrai problème pour les Pionniers
-2. **Adoption** — Nombre significatif d'utilisateurs actifs en testnet
+2. **Adoption** — Nombre significatif d'utilisateurs actifs sur le réseau Pi
 3. **Conformité SDK** — Intégration correcte de Pi.init(), authenticate(), payments
 4. **Qualité** — App stable, performante, sans bugs critiques
 5. **Sécurité** — Pas de failles, tokens validés côté serveur
@@ -53,7 +53,7 @@
   - Non-transférable, permanent, visible sur le profil
 
 ### Étape 1.3 — Créer les Canaux de Communication
-- [ ] Créer un groupe Telegram "Atlasphere Pioneers"
+- [ ] Créer un groupe Telegram "AtlaspherePi Pioneers"
 - [ ] Créer un compte Twitter/X @AtlasphereDAO
 - [ ] Préparer un mini-site landing page (optionnel)
 - [ ] Configurer un canal Discord (optionnel)
@@ -190,7 +190,7 @@ Le dossier doit contenir :
 
 #### A. Description de l'Application
 ```
-Nom : Atlasphere
+Nom : AtlaspherePi
 Catégorie : Governance / Crowdfunding / Climate Tech
 Description : Plateforme DAO décentralisée permettant aux Pionniers Pi de 
 voter sur des projets communautaires, financer des initiatives locales, 
@@ -356,10 +356,10 @@ et contribuer à l'action climatique via EcoChain AI.
 3. [ ] Poster le premier message sur Fireside
 4. [ ] Recruter 10 premiers ambassadeurs
 5. [ ] Configurer le tracking des métriques
-6. [ ] Créer le groupe Telegram Atlasphere
+6. [ ] Créer le groupe Telegram AtlaspherePi
 
 ---
 
-*Feuille de route générée le 2026-08-03 — Atlasphere v1.0*
+*Feuille de route générée le 2026-08-03 — AtlaspherePi v1.0*
 *Durée estimée jusqu'au Mainnet : 16-20 semaines*
 *Facteur clé de succès : Volume de testeurs actifs + conformité SDK parfaite*
