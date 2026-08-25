@@ -1,0 +1,10 @@
+{
+    "translation": {
+      "api_documentation": "Документация API",
+      "security": "Безопасность",
+      "reputation": "Репутация",
+      "settings": "Настройки",
+      "welcome": "Добро пожаловать в AtlaspherePi",
+      "description": "Ваш шлюз в экосистему Pi Network."
+    }
+  }

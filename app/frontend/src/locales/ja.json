@@ -1,0 +1,10 @@
+{
+    "translation": {
+      "api_documentation": "APIドキュメント",
+      "security": "セキュリティ",
+      "reputation": "評判",
+      "settings": "設定",
+      "welcome": "AtlaspherePiへようこそ",
+      "description": "Pi Networkエコシステムへのゲートウェイ。"
+    }
+  }

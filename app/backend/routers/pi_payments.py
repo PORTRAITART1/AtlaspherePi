@@ -18,21 +18,35 @@ from app.backend.models.pi_profiles import Pi_profiles
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/v1/pi-payments", tags=["pi-payments"])
+router = APIRouter(prefix="/api/pi-payments", tags=["pi-payments"])
 
 PI_API_BASE = "https://api.minepi.com"
 
 
 class ApprovePaymentRequest(BaseModel):
-    payment_id: str
+    payment_id: Optional[str] = None
+    paymentId: Optional[str] = None
+
+    def get_payment_id(self) -> str:
+        payment_id = self.payment_id or self.paymentId
+        if not payment_id:
+            raise HTTPException(status_code=400, detail="payment_id/paymentId is required")
+        return payment_id
 
 
 class CompletePaymentRequest(BaseModel):
-    payment_id: str
+    payment_id: Optional[str] = None
+    paymentId: Optional[str] = None
     txid: str
     project_id: int
     amount: float
     pi_uid: str
+
+    def get_payment_id(self) -> str:
+        payment_id = self.payment_id or self.paymentId
+        if not payment_id:
+            raise HTTPException(status_code=400, detail="payment_id/paymentId is required")
+        return payment_id
 
 
 class PaymentStatusRequest(BaseModel):
@@ -53,6 +67,7 @@ class PaymentResponse(BaseModel):
 
 
 @router.post("/approve", response_model=PaymentResponse)
+@router.post("/approve-pi-real", response_model=PaymentResponse)
 async def approve_payment(
     data: ApprovePaymentRequest,
     current_user: UserResponse = Depends(get_current_user),
@@ -65,9 +80,11 @@ async def approve_payment(
         raise HTTPException(status_code=500, detail="PI_API_KEY not configured")
 
     try:
+        payment_id = data.get_payment_id()
+
         async with httpx.AsyncClient(timeout=20.0) as client:
             response = await client.post(
-                f"{PI_API_BASE}/v2/payments/{data.payment_id}/approve",
+                f"{PI_API_BASE}/v2/payments/{payment_id}/approve",
                 headers={
                     "Authorization": f"Key {pi_api_key}",
                     "Content-Type": "application/json"
@@ -77,7 +94,7 @@ async def approve_payment(
         if response.status_code == 200:
             return PaymentResponse(
                 status="approved",
-                payment_id=data.payment_id,
+                payment_id=payment_id,
                 message="Payment approved successfully"
             )
         else:
@@ -96,6 +113,7 @@ async def approve_payment(
 
 
 @router.post("/complete", response_model=PaymentResponse)
+@router.post("/complete-pi-real", response_model=PaymentResponse)
 async def complete_payment(
     data: CompletePaymentRequest,
     current_user: UserResponse = Depends(get_current_user),
@@ -108,10 +126,12 @@ async def complete_payment(
         raise HTTPException(status_code=500, detail="PI_API_KEY not configured")
 
     try:
+        payment_id = data.get_payment_id()
+
         # Call Pi API to complete the payment
         async with httpx.AsyncClient(timeout=20.0) as client:
             response = await client.post(
-                f"{PI_API_BASE}/v2/payments/{data.payment_id}/complete",
+                f"{PI_API_BASE}/v2/payments/{payment_id}/complete",
                 headers={
                     "Authorization": f"Key {pi_api_key}",
                     "Content-Type": "application/json"
@@ -143,7 +163,7 @@ async def complete_payment(
             project_id=data.project_id,
             amount=data.amount,
             transaction_id=data.txid,
-            payment_id=data.payment_id,
+            payment_id=payment_id,
             status="completed",
             pi_uid=data.pi_uid,
             user_id=str(current_user.id)
@@ -153,7 +173,7 @@ async def complete_payment(
 
         return PaymentResponse(
             status="completed",
-            payment_id=data.payment_id,
+            payment_id=payment_id,
             txid=data.txid,
             message=f"Payment completed. {data.amount} π contributed to project."
         )
