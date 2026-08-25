@@ -1,9 +1,9 @@
 // AtlaspherePi Internationalization (i18n) - 6 languages: FR, EN, ES, PT, ZH, AR
 import { useState, useEffect } from 'react';
 
-export type Locale = 'en' | 'es' | 'ar' | 'zh' | 'pt' | 'fr';
+export type Locale = 'en' | 'fr' | 'es' | 'pt' | 'zh' | 'ar';
 
-export const locales: Locale[] = ['en', 'es', 'ar', 'zh', 'pt', 'fr'];
+export const locales: Locale[] = ['en', 'fr', 'es', 'pt', 'zh', 'ar'];
 export const localeNames: Record<Locale, string> = {
   en: 'English',
   fr: 'Français',
@@ -621,6 +621,9 @@ const messages: Record<Locale, Translations> = {
     'terms.s12.text': 'Pour toute question concernant ces conditions, contactez-nous via la plateforme Pi Network ou à travers notre système de support communautaire.',
   },
 
+
+
+
   en: {
     'nav.home': 'Home',
     'nav.proposals': 'Proposals',
@@ -1202,6 +1205,9 @@ const messages: Record<Locale, Translations> = {
     'terms.s12.text': 'For any questions regarding these terms, contact us via the Pi Network platform or through our community support system.',
   },
 
+
+
+
   es: {
     'nav.home': 'Inicio',
     'nav.proposals': 'Propuestas',
@@ -1781,6 +1787,18 @@ const messages: Record<Locale, Translations> = {
     'terms.s11.text': 'Podemos modificar estos términos en cualquier momento. Los cambios se notificarán a través de la plataforma. Su uso continuado después de la modificación constituye la aceptación de los nuevos términos.',
     'terms.s12.title': '12. Contacto',
     'terms.s12.text': 'Para cualquier pregunta sobre estos términos, contáctenos a través de la plataforma Pi Network o mediante nuestro sistema de soporte comunitario.',
+  },
+
+    'api.title': 'Documentación de la API',
+    'api.subtitle': 'Referencia completa de la API REST de AtlaspherePi',
+  },
+
+    'api.title': 'Documentación de la API',
+    'api.subtitle': 'Referencia completa de la API REST de AtlaspherePi',
+  },
+
+    'api.title': 'Documentación de la API',
+    'api.subtitle': 'Referencia completa de la API REST de AtlaspherePi',
   },
 
   pt: {
@@ -2364,6 +2382,18 @@ const messages: Record<Locale, Translations> = {
     'terms.s12.text': 'Para qualquer dúvida sobre estes termos, entre em contato conosco pela plataforma Pi Network ou através do nosso sistema de suporte comunitário.',
   },
 
+    'api.title': 'Documentação da API',
+    'api.subtitle': 'Referência completa da API REST do AtlaspherePi',
+  },
+
+    'api.title': 'Documentação da API',
+    'api.subtitle': 'Referência completa da API REST do AtlaspherePi',
+  },
+
+    'api.title': 'Documentação da API',
+    'api.subtitle': 'Referência completa da API REST do AtlaspherePi',
+  },
+
   zh: {
     'nav.home': '首页',
     'nav.proposals': '提案',
@@ -2943,6 +2973,8 @@ const messages: Record<Locale, Translations> = {
     'terms.s11.text': '我们可能随时修改这些条款。更改将通过平台通知。修改后继续使用即表示接受新条款。',
     'terms.s12.title': '12. 联系方式',
     'terms.s12.text': '如对这些条款有任何疑问，请通过Pi Network平台或我们的社区支持系统与我们联系。',
+    'api.title': 'API 文档',
+    'api.subtitle': 'AtlaspherePi REST API 完整参考',
   },
 
   ar: {
@@ -3534,6 +3566,37 @@ const messages: Record<Locale, Translations> = {
     'terms.s11.text': 'قد نعدل هذه الشروط في أي وقت. سيتم إخطارك بالتغييرات عبر المنصة. استمرارك في الاستخدام بعد التعديل يشكل قبولاً للشروط الجديدة.',
     'terms.s12.title': '12. الاتصال',
     'terms.s12.text': 'لأي أسئلة حول هذه الشروط، تواصل معنا عبر منصة Pi Network أو من خلال نظام الدعم المجتمعي.',
+    // API
+    'api.title': 'وثائق API',
+    'api.subtitle': 'مرجع كامل لواجهة AtlaspherePi REST API',
+
+    // Settings
+    'settings.title': 'الإعدادات',
+    'settings.subtitle': 'إدارة تفضيلاتك وحسابك',
+    'settings.language': 'اللغة',
+    'settings.theme': 'المظهر',
+    'settings.theme.light': 'فاتح',
+    'settings.theme.dark': 'داكن',
+    'settings.theme.system': 'النظام',
+    'settings.notifications': 'الإشعارات',
+    'settings.notifications.email': 'إشعارات البريد الإلكتروني',
+    'settings.notifications.push': 'الإشعارات الفورية',
+    'settings.privacy': 'الخصوصية',
+    'settings.privacy.public': 'عام',
+    'settings.privacy.private': 'خاص',
+    'settings.save': 'حفظ الإعدادات',
+    'settings.saved': 'تم الحفظ!',
+    'settings.pi_network': 'شبكة Pi Network',
+    'settings.pi_uid': 'معرّف Pi (UID)',
+    'settings.pi_username': 'اسم المستخدم Pi',
+    'settings.pi_connected': 'متصل بشبكة Pi',
+    'settings.pi_not_connected': 'غير متصل',
+    'settings.feature_flags': 'ميزات تجريبية',
+    'settings.mainnet_checklist': 'قائمة تحقق Mainnet',
+    'settings.env_variables': 'متغيرات البيئة',
+    'settings.env_configured': 'مُهيَّأ',
+    'settings.env_missing': 'مفقود',
+
   }
 };
 

@@ -309,7 +309,7 @@ async function verifyWithBackend(accessToken: string): Promise<PiUser | null> {
         piLocked: profile.pi_locked || 0,
         streakDays: profile.streak_days || 0,
         kycVerified: profile.kyc_verified || false,
-        language: profile.language || 'fr',
+        language: profile.language || 'en',
       };
     }
   } catch (error) {
@@ -345,7 +345,7 @@ async function fetchProfileFromBackend(): Promise<PiUser | null> {
         piLocked: profile.pi_locked || 0,
         streakDays: profile.streak_days || 0,
         kycVerified: profile.kyc_verified || false,
-        language: profile.language || 'fr',
+        language: profile.language || 'en',
       };
     }
   } catch {
@@ -402,7 +402,7 @@ export async function authenticate(): Promise<PiUser> {
         piLocked: 0,
         streakDays: 0,
         kycVerified: false,
-        language: 'fr'
+        language: 'en'
       };
     }
 
@@ -696,7 +696,7 @@ export async function autoAuthenticate(): Promise<PiUser | null> {
         piLocked: 0,
         streakDays: 0,
         kycVerified: false,
-        language: 'fr'
+        language: 'en'
       };
     }
 
