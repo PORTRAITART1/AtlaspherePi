@@ -13,3 +13,11 @@ app/backend/venv/
 
 *.db
 node_modules/
+
+# Build outputs
+app/frontend/dist/
+dist/
+
+# Logs
+logs/
+*.log

@@ -2,6 +2,7 @@
 // Aligned with @pinetwork-js/sdk and Pi Develop platform standards
 // Reference: https://github.com/pi-apps/pi-platform-docs/blob/master/SDK_reference.md
 import { createClient } from '@metagptx/web-sdk';
+import { getAPIBaseURL } from './config';
 
 // Lazy-initialize client only when needed (avoids blocking on module load)
 let _client: ReturnType<typeof createClient> | null = null;
@@ -232,7 +233,7 @@ async function onIncompletePaymentFound(payment: APIPayment) {
     if (!payment.status.developer_approved) {
       console.log('[AtlaspherePi] Approving incomplete payment:', payment.identifier);
 
-      const approveResponse = await fetch(`${API_URL}/api/pi-payments/approve-pi-real`, {
+      const approveResponse = await fetch(`${getAPIBaseURL()}/api/pi-payments/approve-pi-real`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -255,7 +256,7 @@ async function onIncompletePaymentFound(payment: APIPayment) {
     if (payment.transaction?.verified && !payment.status.developer_completed) {
       console.log('[AtlaspherePi] Completing incomplete payment:', payment.identifier);
 
-      const completeResponse = await fetch(`${API_URL}/api/pi-payments/complete-pi-real`, {
+      const completeResponse = await fetch(`${getAPIBaseURL()}/api/pi-payments/complete-pi-real`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -437,7 +438,7 @@ export async function createPiPayment(
       {
         onReadyForServerApproval: async (paymentId: string) => {
           try {
-            const response = await fetch(`${API_URL}/api/pi-payments/approve-pi-real`, {
+            const response = await fetch(`${getAPIBaseURL()}/api/pi-payments/approve-pi-real`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               credentials: 'include',
@@ -459,7 +460,7 @@ export async function createPiPayment(
 
         onReadyForServerCompletion: async (paymentId: string, txid: string) => {
           try {
-            const response = await fetch(`${API_URL}/api/pi-payments/complete-pi-real`, {
+            const response = await fetch(`${getAPIBaseURL()}/api/pi-payments/complete-pi-real`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               credentials: 'include',
