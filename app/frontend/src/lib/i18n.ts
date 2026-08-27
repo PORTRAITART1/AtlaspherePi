@@ -3723,7 +3723,7 @@ const messages: Record<Locale, Translations> = {
     'settings.env_configured': 'مُهيَّأ',
     'settings.env_missing': 'مفقود',
 
-  }
+  },
 
   ru: {
     'nav.home': 'Главная',

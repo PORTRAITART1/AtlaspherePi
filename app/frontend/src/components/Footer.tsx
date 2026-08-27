@@ -43,7 +43,12 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">{t('footer.community')}</h4>
             <div className="space-y-2.5">
               <a href="https://minepi.com" target="_blank" rel="noopener noreferrer" className="block text-gray-400 hover:text-indigo-400 text-sm transition-colors">{t('footer.pi_network')}</a>
-              <Link to="/api-docs" className="block text-gray-400 hover:text-indigo-400 text-sm transition-colors">{t('footer.api_docs')}</Link>
+              <Link
+  to={`/api-docs?lng=${localStorage.getItem('atlaspherepi_locale') || 'en'}`}
+  className="block text-gray-400 hover:text-indigo-400 text-sm transition-colors"
+>
+  {t('footer.api_docs')}
+</Link>
               <Link to="/security" className="block text-gray-400 hover:text-indigo-400 text-sm transition-colors">{t('footer.security')}</Link>
               <Link to="/reputation" className="block text-gray-400 hover:text-indigo-400 text-sm transition-colors">{t('footer.reputation')}</Link>
               <Link to="/settings" className="block text-gray-400 hover:text-indigo-400 text-sm transition-colors">{t('footer.settings')}</Link>

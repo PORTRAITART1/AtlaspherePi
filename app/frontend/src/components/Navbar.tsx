@@ -8,6 +8,7 @@ import GlobalSearch from '@/components/GlobalSearch';
 import ThemeToggle from '@/components/ThemeToggle';
 import PushNotifications from '@/components/PushNotifications';
 import { getTotalUnread } from '@/lib/messaging';
+import { useTranslation } from 'react-i18next';
 
 export default function Navbar() {
   const [user, setUser] = useState<PiUser | null>(getCurrentUser());
@@ -17,6 +18,7 @@ export default function Navbar() {
   const [, setLangTick] = useState(0);
   const location = useLocation();
   const navRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
   const dropdownTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -112,7 +114,7 @@ export default function Navbar() {
     { path: '/ipfs-storage', label: t('nav.more.ipfs'), icon: '💾', desc: t('nav.more.ipfs_desc') },
     { path: '/analytics', label: t('nav.more.analytics'), icon: '📈', desc: t('nav.more.analytics_desc') },
     { path: '/map', label: t('nav.more.map'), icon: '🗺️', desc: t('nav.more.map_desc') },
-    { path: '/notification-settings', label: t('nav.more.notifications'), icon: '🔔', desc: t('nav.more.notifications_desc') },
+    { path: '/notification-', label: t('nav.more.notifications'), icon: '🔔', desc: t('nav.more.notifications_desc') },
     { path: '/marketing-download', label: t('nav.more.marketing'), icon: '📦', desc: t('nav.more.marketing_desc') },
     { path: '/settings', label: t('nav.more.settings'), icon: '⚙️', desc: t('nav.more.settings_desc') },
     { path: '/admin', label: t('nav.more.admin'), icon: '🛡️', desc: t('nav.more.admin_desc') },
@@ -181,7 +183,7 @@ export default function Navbar() {
                 }`}
               >
                 <span className="text-xs">🌱</span>
-                <span>EcoChain</span>
+                <span>{t('nav.ecochain_title')}</span>
                 <svg
                   className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === 'eco' ? 'rotate-180' : ''}`}
                   fill="none"
@@ -196,7 +198,7 @@ export default function Navbar() {
                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[420px] bg-slate-800/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-2xl shadow-black/40 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50">
                   <div className="p-2">
                     <div className="px-3 py-2 mb-1">
-                      <p className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">{t('nav.ecochain')} AI</p>
+                      <p className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">{t('nav.ecochain_title')} AI</p>
                       <p className="text-[11px] text-gray-500 mt-0.5">{t('nav.ecochain_desc')}</p>
                     </div>
                     <div className="grid grid-cols-2 gap-0.5">
@@ -237,7 +239,7 @@ export default function Navbar() {
                 }`}
               >
                 <span className="text-xs">🏛️</span>
-                <span>DAO</span>
+                <span>{t('nav.dao_title')}</span>
                 <svg
                   className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === 'dao' ? 'rotate-180' : ''}`}
                   fill="none"
@@ -453,7 +455,7 @@ export default function Navbar() {
 
             {/* EcoChain section */}
             <div className="space-y-0.5 mb-4">
-              <p className="px-3 py-1.5 text-[10px] font-bold text-emerald-500 uppercase tracking-widest">🌱 {t('nav.ecochain')} AI</p>
+              <p className="px-3 py-1.5 text-[10px] font-bold text-emerald-500 uppercase tracking-widest">🌱 {t('nav.ecochain_title')} AI</p>
               <div className="grid grid-cols-2 gap-0.5">
                 {ecoLinks.map((link) => (
                   <Link

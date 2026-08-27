@@ -7,6 +7,7 @@ import FeedbackForm from '@/components/FeedbackForm';
 import EcoChatbot from '@/components/EcoChatbot';
 import { autoAuthenticate, isInPiBrowser } from '@/lib/pi-sdk';
 import { applyTheme } from '@/lib/theme';
+import { useTranslation } from 'react-i18next';
 
 // Lazy-loaded pages for performance
 const Index = lazy(() => import('./pages/Index'));
@@ -133,6 +134,8 @@ const AppRoutes = () => (
 );
 
 const App = () => {
+  const { t } = useTranslation(); // Initialisation de la traduction
+
   useEffect(() => {
     // Apply saved theme on mount
     applyTheme();
