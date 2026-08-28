@@ -85,7 +85,7 @@ app = FastAPI(
     description="A best-practice FastAPI template with modular architecture",
     version="1.0.0",
     lifespan=lifespan,
-    swagger_ui_parameters={"locale": "zh"},
+    swagger_ui_parameters={"locale": "zh-CN"},
 )
 
 
